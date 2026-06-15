@@ -9,6 +9,7 @@ import { Dashboard } from '../pages/Dashboard';
 import { Journals } from '../pages/Journals';
 import { Moods } from '../pages/Moods';
 import { Profile } from '../pages/Profile';
+import { TagAnalysis } from '../pages/TagAnalysis';
 import { AuthGuard } from './guards';
 
 function Shell() {
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
         children: [
           { path: 'dashboard', element: <Dashboard /> },
           { path: 'moods', element: <Moods /> },
+          { path: 'tag-analysis', element: <TagAnalysis /> },
           { path: 'assessments', element: <Assessments /> },
           { path: 'journals', element: <Journals /> },
           { path: 'profile', element: <Profile /> },

@@ -46,3 +46,14 @@ class MoodTrendPoint(BaseModel):
     mood_level: float
     dominant_tag: str
 
+
+class WeeklyTagPoint(BaseModel):
+    week_start: str
+    tag: str
+    days: int
+
+
+class WeeklyTagStats(BaseModel):
+    week_start: str
+    tags: list[WeeklyTagPoint]
+

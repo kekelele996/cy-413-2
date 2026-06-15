@@ -242,6 +242,68 @@ a {
   align-items: center;
 }
 
+.tag-filter-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.tag-filter-active {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-filter-clear {
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+.tag-filter-clear:hover {
+  text-decoration: underline;
+}
+
+.tag-filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.entry-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.entry-card:hover {
+  background: color-mix(in srgb, var(--primary) 16%, var(--surface));
+}
+
+.entry-card-text h3 {
+  margin: 0 0 4px;
+  color: var(--text);
+}
+
+.entry-card-text p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.entry-card-arrow {
+  color: var(--primary);
+  font-size: 20px;
+  font-weight: 700;
+}
+
 @media (max-width: 820px) {
   .app-header {
     align-items: flex-start;

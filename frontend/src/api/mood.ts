@@ -1,4 +1,4 @@
-import type { Mood, MoodPayload, MoodTrendPoint } from '../types';
+import type { Mood, MoodPayload, MoodTrendPoint, WeeklyTagStats } from '../types';
 import { request } from '../utils/request';
 
 export function getMoods(params?: { start_date?: string; end_date?: string }) {
@@ -30,5 +30,9 @@ export function deleteMood(id: number) {
 
 export function getMoodTrend() {
   return request<MoodTrendPoint[]>('/moods/stats/trend');
+}
+
+export function getWeeklyTagStats() {
+  return request<WeeklyTagStats[]>('/moods/stats/weekly-tags');
 }
 

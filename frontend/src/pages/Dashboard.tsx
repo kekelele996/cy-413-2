@@ -1,6 +1,6 @@
 import { Button, List, Statistic } from 'antd';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AssessmentCard } from '../components/common/AssessmentCard';
 import { EmptyState } from '../components/common/EmptyState';
 import { MoodSelector } from '../components/common/MoodSelector';
@@ -17,6 +17,7 @@ export function Dashboard() {
   const { moods, trend, loadMoods, loadTrend, createMood } = useMoodStore();
   const stats = useMoodStats(moods);
   const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) return;
@@ -39,6 +40,16 @@ export function Dashboard() {
         </div>
         <div className="panel">
           <Statistic title="主要标签" value={stats.dominantTag} />
+        </div>
+      </section>
+
+      <section style={{ marginBottom: 18 }}>
+        <div className="entry-card" onClick={() => navigate('/tag-analysis')}>
+          <div className="entry-card-text">
+            <h3>情绪标签分析</h3>
+            <p>按周查看最频繁的情绪标签与出现天数，点击标签筛选记录</p>
+          </div>
+          <span className="entry-card-arrow">→</span>
         </div>
       </section>
 

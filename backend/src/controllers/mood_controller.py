@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.models.mood import Mood
 from src.models.user import User
-from src.schemas.mood import MoodCreate, MoodTrendPoint, MoodUpdate
+from src.schemas.mood import MoodCreate, MoodTrendPoint, MoodUpdate, WeeklyTagStats
 from src.services import mood_service
 from src.utils.logger import app_logger
 
@@ -47,5 +47,13 @@ def trend(db: Session, current_user: User) -> list[MoodTrendPoint]:
         return mood_service.mood_trend(db, current_user)
     except Exception as exc:
         app_logger.error("Mood[user_id=%s] controller trend failed: %s", current_user.id, exc)
+        raise
+
+
+def weekly_tags(db: Session, current_user: User) -> list[WeeklyTagStats]:
+    try:
+        return mood_service.weekly_tag_stats(db, current_user)
+    except Exception as exc:
+        app_logger.error("Mood[user_id=%s] controller weekly_tags failed: %s", current_user.id, exc)
         raise
 

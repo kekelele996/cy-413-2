@@ -41,6 +41,17 @@ export interface MoodTrendPoint {
   dominant_tag: MoodTag | string;
 }
 
+export interface WeeklyTagPoint {
+  week_start: string;
+  tag: MoodTag;
+  days: number;
+}
+
+export interface WeeklyTagStats {
+  week_start: string;
+  tags: WeeklyTagPoint[];
+}
+
 export interface AssessmentQuestion {
   id: string;
   text: string;

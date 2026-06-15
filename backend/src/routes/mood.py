@@ -8,7 +8,7 @@ from src.controllers import mood_controller
 from src.middlewares.auth import get_current_user
 from src.models.mood import Mood
 from src.models.user import User
-from src.schemas.mood import MoodCreate, MoodRead, MoodTrendPoint, MoodUpdate
+from src.schemas.mood import MoodCreate, MoodRead, MoodTrendPoint, MoodUpdate, WeeklyTagStats
 
 router = APIRouter()
 
@@ -54,4 +54,9 @@ def delete_mood(
 @router.get("/stats/trend", response_model=list[MoodTrendPoint])
 def trend(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[MoodTrendPoint]:
     return mood_controller.trend(db, current_user)
+
+
+@router.get("/stats/weekly-tags", response_model=list[WeeklyTagStats])
+def weekly_tags(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)) -> list[WeeklyTagStats]:
+    return mood_controller.weekly_tags(db, current_user)
 

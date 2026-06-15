@@ -1,5 +1,5 @@
 from collections import Counter, defaultdict
-from datetime import date
+from datetime import date, timedelta
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -9,7 +9,7 @@ from src.constants.log_templates import LOG_TEMPLATES
 from src.middlewares.error_handler import AppError
 from src.models.mood import Mood
 from src.models.user import User
-from src.schemas.mood import MoodCreate, MoodTrendPoint, MoodUpdate
+from src.schemas.mood import MoodCreate, MoodTrendPoint, MoodUpdate, WeeklyTagPoint, WeeklyTagStats
 from src.utils.formatters import format_date
 from src.utils.logger import app_logger
 
@@ -80,4 +80,25 @@ def mood_trend(db: Session, user: User) -> list[MoodTrendPoint]:
         points.append(MoodTrendPoint(date=day, mood_level=round(avg, 2), dominant_tag=dominant))
     app_logger.info(LOG_TEMPLATES["MOOD_TREND"].format(user_id=user.id, mood_tags=[point.dominant_tag for point in points]))
     return points
+
+
+def weekly_tag_stats(db: Session, user: User) -> list[WeeklyTagStats]:
+    moods = list(db.scalars(select(Mood).where(Mood.user_id == user.id).order_by(Mood.record_date.asc())).all())
+    week_buckets: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+    for mood in moods:
+        d = mood.record_date if isinstance(mood.record_date, date) else mood.record_date.date()
+        week_start = d - timedelta(days=d.weekday())
+        week_key = format_date(week_start)
+        for tag in mood.mood_tags:
+            week_buckets[week_key][tag].add(format_date(d))
+    result: list[WeeklyTagStats] = []
+    for week_key in sorted(week_buckets.keys()):
+        tags_data = week_buckets[week_key]
+        points = [
+            WeeklyTagPoint(week_start=week_key, tag=tag, days=len(days_set))
+            for tag, days_set in tags_data.items()
+        ]
+        points.sort(key=lambda p: p.days, reverse=True)
+        result.append(WeeklyTagStats(week_start=week_key, tags=points))
+    return result
 
